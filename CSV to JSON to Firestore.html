@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSV to Firestore JSON + Upload</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #001f3f;
+      color: #1de3ff;
+      padding: 40px;
+      text-align: center;
+    }
+    section {
+      border: 1px solid #1de3ff;
+      border-radius: 10px;
+      margin: 20px auto;
+      padding: 20px;
+      max-width: 700px;
+    }
+    h2 {
+      color: #1de3ff;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 1rem;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>📁 CSV to Firestore JSON + Upload Tool</h1>
+
+  <!-- Section 1: CSV to JSON -->
+  <section>
+    <h2>Step 1: Convert CSV to Firestore JSON</h2>
+    <p>Upload your CSV file to convert it to nested Firestore JSON.</p>
+    <input type="file" id="csvFile" accept=".csv">
+    <br>
+    <button onclick="handleCSV()">Convert CSV to JSON and Download JSON</button>
+  </section>
+
+  <!-- Section 2: Upload JSON to Firebase -->
+  <section>
+    <h2>Step 2: Upload JSON to Firestore</h2>
+    <p>Upload the converted JSON file to your Firestore database.<br><strong>Note:</strong> Firebase must be configured properly.</p>
+    <input type="file" id="jsonFile" accept=".json">
+    <br>
+    <button onclick="uploadToFirebase()">Upload JSON to Firebase</button>
+  </section>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+
+  <script>
+    // Your Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDV6jVtyxIncItd4Zg6QzWxg_VT3OKQq0w",
+      authDomain: "press-information-c4e8a.firebaseapp.com",
+      projectId: "press-information-c4e8a",
+      storageBucket: "press-information-c4e8a.appspot.com",
+      messagingSenderId: "640473978066",
+      appId: "1:640473978066:web:163eef5c0e1441847c490b"
+    };
+
+    // Initialize Firebase
+    const app = firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore(app);
+
+    // Convert CSV to nested Firestore-style JSON
+    function handleCSV() {
+      const fileInput = document.getElementById('csvFile');
+      const file = fileInput.files[0];
+
+      if (!file) {
+        alert("Please upload a CSV file.");
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const text = e.target.result;
+        const lines = text.trim().split('\n');
+        const headers = lines[0].split(',').map(h => h.trim());
+
+        const data = lines.slice(1).map(line => {
+          const values = line.split(',').map(v => v.trim());
+          return Object.fromEntries(headers.map((h, i) => [h, values[i]]));
+        });
+
+        const nestedData = {};
+
+        data.forEach(row => {
+          const company = row["companyName"];
+          const location = row["locationName"];
+          const press = row["pressName"];
+
+          if (!nestedData[company]) {
+            nestedData[company] = {
+              name: company,
+              locations: {}
+            };
+          }
+
+          if (!nestedData[company].locations[location]) {
+            nestedData[company].locations[location] = {
+              name: location,
+              presses: {}
+            };
+          }
+
+          nestedData[company].locations[location].presses[press] = {
+            name: press,
+            glueTab: row["glueTab"],
+            leadEdge: row["leadEdge"]
+          };
+        });
+
+        const blob = new Blob([JSON.stringify(nestedData, null, 2)], { type: 'application/json' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'firestore_nested.json';
+        link.click();
+      };
+
+      reader.readAsText(file);
+    }
+
+    // Upload nested JSON to Firestore
+   async function uploadToFirebase() {
+  const fileInput = document.getElementById('jsonFile');
+  const file = fileInput.files[0];
+
+  if (!file) {
+    alert("Please upload a JSON file.");
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const jsonData = JSON.parse(e.target.result);
+
+      for (const [companyName, companyData] of Object.entries(jsonData)) {
+        if (!companyName) continue;
+
+        const companyRef = db.collection('companies').doc(companyName);
+        await companyRef.set({ name: companyData.name });
+
+        for (const [locationName, locationData] of Object.entries(companyData.locations || {})) {
+          if (!locationName) continue;
+
+          const locationRef = companyRef.collection('locations').doc(locationName);
+          await locationRef.set({ name: locationData.name });
+
+          for (const [pressName, pressData] of Object.entries(locationData.presses || {})) {
+            if (!pressName) continue;
+
+            const pressRef = locationRef.collection('presses').doc(pressName);
+            await pressRef.set(pressData);
+          }
+        }
+      }
+
+      alert("✅ JSON uploaded successfully to Firestore!");
+    } catch (err) {
+      console.error("Upload failed:", err);
+      alert("❌ Error uploading JSON to Firestore. See console for details.");
+    }
+  };
+
+  reader.readAsText(file);
+}
+
+  </script>
+</body>
+</html>

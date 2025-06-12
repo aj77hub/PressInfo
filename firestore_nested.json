@@ -1,0 +1,157 @@
+{
+  "International Paper": {
+    "name": "International Paper",
+    "locations": {
+      "Columbus": {
+        "name": "Columbus",
+        "presses": {
+          "ward 50˝": {
+            "name": "ward 50˝",
+            "glueTab": "LEFT",
+            "leadEdge": "BOTTOM"
+          }
+        }
+      },
+      "Bay Minette": {
+        "name": "Bay Minette",
+        "presses": {
+          "??": {
+            "name": "??",
+            "glueTab": "??",
+            "leadEdge": "??"
+          }
+        }
+      },
+      "Bogalusa": {
+        "name": "Bogalusa",
+        "presses": {
+          "??": {
+            "name": "??",
+            "glueTab": "??",
+            "leadEdge": "??"
+          }
+        }
+      },
+      "Cleveland": {
+        "name": "Cleveland",
+        "presses": {
+          "50˝ T-HEAD-#5170": {
+            "name": "50˝ T-HEAD-#5170",
+            "glueTab": "RIGHT",
+            "leadEdge": "TOP"
+          },
+          "66˝ BOBST ELITE": {
+            "name": "66˝ BOBST ELITE",
+            "glueTab": "??",
+            "leadEdge": "??"
+          },
+          "38˝X96˝ S&S": {
+            "name": "38˝X96˝ S&S",
+            "glueTab": "RIGHT",
+            "leadEdge": "TOP"
+          },
+          "40˝ MARTIN #5124": {
+            "name": "40˝ MARTIN #5124",
+            "glueTab": "RIGHT",
+            "leadEdge": "TOP"
+          },
+          "66˝ - .165 NON PRINT PB": {
+            "name": "66˝ - .165 NON PRINT PB",
+            "glueTab": "??",
+            "leadEdge": "??"
+          },
+          "EVOL": {
+            "name": "EVOL",
+            "glueTab": "LEFT",
+            "leadEdge": "TOP"
+          },
+          "": {
+            "name": "",
+            "glueTab": "",
+            "leadEdge": ""
+          }
+        }
+      },
+      "Dothan": {
+        "name": "Dothan",
+        "presses": {
+          "": {
+            "name": "",
+            "glueTab": "",
+            "leadEdge": ""
+          }
+        }
+      },
+      "Morristown": {
+        "name": "Morristown",
+        "presses": {
+          "": {
+            "name": "",
+            "glueTab": "",
+            "leadEdge": ""
+          }
+        }
+      },
+      "Murfreesboro": {
+        "name": "Murfreesboro",
+        "presses": {
+          "": {
+            "name": "",
+            "glueTab": "",
+            "leadEdge": ""
+          }
+        }
+      },
+      "Orlando": {
+        "name": "Orlando",
+        "presses": {
+          "": {
+            "name": "",
+            "glueTab": "",
+            "leadEdge": ""
+          }
+        }
+      },
+      "Plant City": {
+        "name": "Plant City",
+        "presses": {
+          "": {
+            "name": "",
+            "glueTab": "",
+            "leadEdge": ""
+          }
+        }
+      },
+      "Tampa": {
+        "name": "Tampa",
+        "presses": {
+          "": {
+            "name": "",
+            "glueTab": "",
+            "leadEdge": ""
+          }
+        }
+      },
+      "Decatur": {
+        "name": "Decatur",
+        "presses": {
+          "": {
+            "name": "",
+            "glueTab": "",
+            "leadEdge": ""
+          }
+        }
+      },
+      "Griffin": {
+        "name": "Griffin",
+        "presses": {
+          "": {
+            "name": "",
+            "glueTab": "",
+            "leadEdge": ""
+          }
+        }
+      }
+    }
+  }
+}
